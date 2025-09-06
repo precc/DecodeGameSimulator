@@ -1,17 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Hello World React</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-
-    <!-- Our app code -->
-    <script type="text/babel" src="./app.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FTC Field Simulator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    svg {
+      background: white;
+      border: 2px solid #475569;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>FTC Field Simulator</h1>
+  <div id="root">
+    <svg id="fieldSVG" width="760" height="760" viewBox="0 0 760 760"></svg>
+  </div>
+  <script src="app.js"></script>
+</body>
 </html>
