@@ -127,17 +127,17 @@ function App() {
     let pts;
     if (direction === "down-left") {
       pts = [
+        [sx, sy + tileSize],
         [sx + tunnelWidth, sy + tileSize],
-        [sx + tunnelWidth * 2, sy + tileSize],
-        [sx + tunnelWidth * 2, sy + tileSize + tunnelLen],
         [sx + tunnelWidth, sy + tileSize + tunnelLen],
+        [sx, sy + tileSize + tunnelLen],
       ];
     } else {
       pts = [
+        [sx + tileSize, sy + tileSize],
         [sx + tileSize - tunnelWidth, sy + tileSize],
-        [sx + tileSize - tunnelWidth * 2, sy + tileSize],
-        [sx + tileSize - tunnelWidth * 2, sy + tileSize + tunnelLen],
         [sx + tileSize - tunnelWidth, sy + tileSize + tunnelLen],
+        [sx + tileSize, sy + tileSize + tunnelLen],
       ];
     }
     svg.appendChild(newPolygon(pts, color, null, 0));
@@ -152,6 +152,10 @@ function App() {
     const { sx, sy } = tileTopLeft(x, y);
     const size = 18 * pxPerInch;
     let bx = sx, by = sy;
+    if (corner === "left-bottom") {
+      bx = sx;
+      by = sy + tileSize - size;
+    }
     if (corner === "right-bottom") {
       bx = sx + tileSize - size;
       by = sy + tileSize - size;
@@ -177,8 +181,8 @@ function App() {
   drawRamp(0, 5, blue, "down-left");
   drawRamp(5, 5, red, "down-right");
 
-  drawSecretTunnel(0, 3, blue, "down-left");
-  drawSecretTunnel(5, 3, red, "down-right");
+  drawSecretTunnel(0, 3, red, "down-left");
+  drawSecretTunnel(5, 3, blue, "down-right");
 
   drawLoadingZone(0, 0, red);
   drawLoadingZone(5, 0, blue);
@@ -190,9 +194,44 @@ function App() {
   drawArtifacts(0, 2, [purple, green, purple]);
   drawArtifacts(0, 3, [green, purple, purple]);
 
-  drawArtifacts(5, 1, [green, purple, purple]);
-  drawArtifacts(5, 2, [purple, green, purple]);
-  drawArtifacts(5, 3, [purple, purple, green]);
+  drawArtifacts(4, 1, [green, purple, purple]);
+  drawArtifacts(4, 2, [purple, green, purple]);
+  drawArtifacts(4, 3, [purple, purple, green]);
+
+  // === O B E L I S K ===
+  const obeliskPatterns = ["GPP", "GPG", "PPG"];
+  let currentPattern = "GPP";
+
+  // Rectangle
+  const obelisk = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  obelisk.setAttribute("x", 300);     // adjust X position
+  obelisk.setAttribute("y", 20);      // just above the field
+  obelisk.setAttribute("width", 160);
+  obelisk.setAttribute("height", 60);
+  obelisk.setAttribute("fill", "#f1f5f9");
+  obelisk.setAttribute("stroke", "#000");
+  obelisk.setAttribute("stroke-width", "2");
+  obelisk.style.cursor = "pointer";
+  svg.appendChild(obelisk);
+
+  // Text inside rectangle
+  const obeliskText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  obeliskText.setAttribute("x", 380); // center text
+  obeliskText.setAttribute("y", 60);
+  obeliskText.setAttribute("text-anchor", "middle");
+  obeliskText.setAttribute("dominant-baseline", "middle");
+  obeliskText.setAttribute("font-size", "32");
+  obeliskText.setAttribute("font-family", "Arial, sans-serif");
+  obeliskText.textContent = currentPattern;
+  svg.appendChild(obeliskText);
+
+  // Click to randomize pattern
+  obelisk.addEventListener("click", () => {
+    const newPattern = obeliskPatterns[Math.floor(Math.random() * obeliskPatterns.length)];
+    currentPattern = newPattern;
+    obeliskText.textContent = currentPattern;
+  });
+
 };
 
 console.log("App.js loaded!");
